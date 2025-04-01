@@ -17,6 +17,7 @@ FACEIT_NICKNAME = "GoraGMX"  # Пока просто выводим, интег�
 @app.post("/telegram")
 async def telegram_webhook(request: Request):
     body = await request.json()
+    print("[GORIX TELEGRAM] ПОЛУЧЕНО:", body)
     message = body.get("message")
 
     if not message:
