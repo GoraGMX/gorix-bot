@@ -1,5 +1,5 @@
 fastapi
 uvicorn
 httpx
-openai
+openai==0.28
 python-dotenv
