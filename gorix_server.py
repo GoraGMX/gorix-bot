@@ -3,24 +3,24 @@ import httpx
 import os
 import asyncio
 import openai
-
+import pprint
 
 app = FastAPI()
 
+# === Настройки ===
 TELEGRAM_TOKEN = "7824115370:AAEiWF2K6VjFtP6rJIeZdeLN6PTxD5biiMw"
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
-
-# Константы
 YOUTUBE_LINK = "https://youtube.com/@GoraGMX"
-FACEIT_NICKNAME = "GoraGMX"  # Пока просто выводим, интеграция позже
+FACEIT_NICKNAME = "GoraGMX"
 
-# Обработка Telegram webhook
+# === Webhook от Telegram ===
 @app.post("/telegram")
 async def telegram_webhook(request: Request):
     body = await request.json()
     print("=== RAW TELEGRAM UPDATE ===")
     pprint.pprint(body)
 
+    message = body.get("message")
     if not message:
         return {"ok": True}
 
@@ -48,12 +48,13 @@ async def telegram_webhook(request: Request):
         reply = f"[GORIX]: Вот мой YouTube канал — {YOUTUBE_LINK}"
 
     else:
-        return {"ok": True}  # Не обрабатываем другие сообщения
+        return {"ok": True}  # Не реагируем на другие команды
 
     await send_message(chat_id, reply)
     return {"ok": True}
 
 
+# === Запрос к OpenAI ===
 async def ask_gpt(prompt: str) -> str:
     openai.api_key = os.getenv("OPENAI_API_KEY")
     try:
@@ -66,6 +67,7 @@ async def ask_gpt(prompt: str) -> str:
         return f"Ошибка: {str(e)}"
 
 
+# === Ответ в Telegram ===
 async def send_message(chat_id: int, text: str):
     async with httpx.AsyncClient() as client:
         await client.post(f"{TELEGRAM_API_URL}/sendMessage", json={
