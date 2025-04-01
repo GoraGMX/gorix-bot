@@ -4,6 +4,7 @@ import os
 import asyncio
 import openai
 
+
 app = FastAPI()
 
 TELEGRAM_TOKEN = "7824115370:AAEiWF2K6VjFtP6rJIeZdeLN6PTxD5biiMw"
@@ -17,8 +18,8 @@ FACEIT_NICKNAME = "GoraGMX"  # Пока просто выводим, интег�
 @app.post("/telegram")
 async def telegram_webhook(request: Request):
     body = await request.json()
-    print("[GORIX TELEGRAM] ПОЛУЧЕНО:", body)
-    message = body.get("message")
+    print("=== RAW TELEGRAM UPDATE ===")
+    pprint.pprint(body)
 
     if not message:
         return {"ok": True}
