@@ -8,7 +8,7 @@ import pprint
 app = FastAPI()
 
 # === Настройки ===
-TELEGRAM_TOKEN = "7824115370:AAEiWF2K6VjFtP6rJIeZdeLN6PTxD5biiMw"
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
 YOUTUBE_LINK = "https://youtube.com/@GoraGMX"
 FACEIT_NICKNAME = "GoraGMX"
